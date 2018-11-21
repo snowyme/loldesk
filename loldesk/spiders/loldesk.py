@@ -6,6 +6,7 @@ from loldesk.items import LoldeskItem
 class loldeskpiderSpider(scrapy.Spider):
     name = "loldesk"
     allowed_domains = ["www.win4000.com"]
+    # 抓取链接
     start_urls = [
         'http://www.win4000.com/zt/lol.html'
     ]
@@ -27,8 +28,7 @@ class loldeskpiderSpider(scrapy.Spider):
         item['name'] = response.css(".pic-large::attr(title)").extract_first()
         item['ImgUrl'] = response.css(".pic-large::attr(src)").extract()
         yield item
-        # 提取图片,存入文件夹
-        # print(item['ImgUrl'])
+        # 判断页码
         next_url = response.css(".pic-next-img a::attr(href)").extract_first()
         allnum = response.css(".ptitle em::text").extract_first()
         thisnum = next_url[-6:-5]

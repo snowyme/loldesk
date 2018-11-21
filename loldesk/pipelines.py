@@ -3,7 +3,6 @@ from scrapy.exceptions import DropItem
 from scrapy.http import Request
 import re
 
-
 class MyImagesPipeline(ImagesPipeline):
 
     def get_media_requests(self, item, info):
@@ -12,13 +11,10 @@ class MyImagesPipeline(ImagesPipeline):
 
     def file_path(self, request, response=None, info=None):
         name = request.meta['item']
-        # name = filter(lambda x: x not in '()0123456789', name)
         name = re.sub(r'[？\\*|“<>:/()0123456789]', '', name)
         image_guid = request.url.split('/')[-1]
-        # name2 = request.url.split('/')[-2]
         filename = u'full/{0}/{1}'.format(name, image_guid)
         return filename
-        # return 'full/%s' % (image_guid)
 
     def item_completed(self, results, item, info):
         image_path = [x['path'] for ok, x in results if ok]
